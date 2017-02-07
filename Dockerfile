@@ -1,8 +1,22 @@
-FROM metocean/aroha:v1.0.0
-MAINTAINER Thomas Coats <thomas@metocean.co.nz>
+FROM influxdb:1.1.1
+MAINTAINER Rafael Soutelino <r.soutelino@metocean.co.nz>
 
-ENV INFLUXDB_VERSION=0.12.1
+RUN apt-get update && apt-get install unzip
 
-ADD . /install/
-RUN /install/install.sh
-CMD ["/sbin/initsh"]
+# Install consul
+RUN echo "-----------------Install Consul-----------------" &&\
+	cd /tmp &&\
+	mkdir /consul &&\
+	wget https://releases.hashicorp.com/consul/0.5.2/consul_0.5.2_linux_amd64.zip &&\
+	wget https://releases.hashicorp.com/consul/0.5.2/consul_0.5.2_web_ui.zip &&\
+	unzip consul_0.5.2_linux_amd64.zip &&\
+	unzip consul_0.5.2_web_ui.zip &&\
+	mv consul /usr/bin &&\
+	mkdir -p /var/www/consul &&\
+	mv dist/* /var/www/consul/ &&\
+	rm -r dist consul_0.5.2_linux_amd64.zip consul_0.5.2_web_ui.zip
+
+
+ADD entrypoint.sh /.entrypoint.sh
+RUN chmod +x /.entrypoint.sh
+ENTRYPOINT ["/.entrypoint.sh"]
