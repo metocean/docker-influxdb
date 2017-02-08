@@ -16,9 +16,14 @@ RUN echo "-----------------Install Consul-----------------" &&\
 	mv dist/* /var/www/consul/ &&\
 	rm -r dist consul_0.5.2_linux_amd64.zip consul_0.5.2_web_ui.zip
 
-RUN mkdir -p /etc/service/consul
-COPY consul.sh /etc/service/consul/run
-RUN chmod +x /etc/service/consul/run
+
+# Install consul
+RUN echo "-----------------Install Chronograf-----------------" &&\
+	cd /tmp &&\
+	wget https://dl.influxdata.com/chronograf/nightlies/chronograf_nightly_amd64.deb &&\
+	dpkg -i chronograf_nightly_amd64.deb
+
+COPY config.toml /opt/chronograf/config.toml
 
 COPY entrypoint.sh /.entrypoint.sh
 RUN chmod +x /.entrypoint.sh
