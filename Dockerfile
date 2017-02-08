@@ -23,7 +23,6 @@ RUN echo "-----------------Install Chronograf-----------------" &&\
 	wget https://dl.influxdata.com/chronograf/nightlies/chronograf_nightly_amd64.deb &&\
 	dpkg -i chronograf_nightly_amd64.deb
 
-COPY config.toml /opt/chronograf/config.toml
 
 COPY entrypoint.sh /.entrypoint.sh
 RUN chmod +x /.entrypoint.sh
