@@ -16,7 +16,7 @@ RUN echo "-----------------Install Consul-----------------" &&\
 	mv dist/* /var/www/consul/ &&\
 	rm -r dist consul_0.5.2_linux_amd64.zip consul_0.5.2_web_ui.zip
 
-RUN mkdir -p /etc/service/vsftpd /etc/service/apache2 /etc/service/consul /var/run/vsftpd/empty
+RUN mkdir -p /etc/service/consul
 COPY consul.sh /etc/service/consul/run
 RUN chmod +x /etc/service/consul/run
 
