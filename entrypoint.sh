@@ -1,21 +1,8 @@
 #!/bin/bash
+set -e
 
-if [[ -n "$@" ]]; then
-    trap 'consul leave; kill -TERM $PID' TERM INT
-    if [ -z "$CONSULDATA" ]; then export CONSULDATA="/tmp/consul-data";fi
-    if [ -z "$CONSULDIR" ]; then export CONSULDIR="/consul";fi
-    if [ "$(ls -A $CONSULDIR)" ]; then
-        exec sudo consul agent -data-dir=$CONSULDATA -config-dir=$CONSULDIR &
-    fi
-    echo "Starting InfluxDB ..."
-    influxd &
-    echo "influxDB started!"
-    PID=$!
-    wait $PID
-    trap - TERM INT
-    wait $PID
-elif [[ -z "$@" || "$@" == "/bin/bash" ]]; then
-    /bin/bash
-else
-    $@
+if [ "${1:0:1}" = '-' ]; then
+    set -- influxd "$@"
 fi
+
+exec "$@"
