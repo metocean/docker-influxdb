@@ -20,6 +20,7 @@ RUN mkdir -p /etc/service/consul
 COPY consul.sh /etc/service/consul/run
 RUN chmod +x /etc/service/consul/run
 
-COPY entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+COPY entrypoint.sh /.entrypoint.sh
+RUN chmod +x /.entrypoint.sh
+ENTRYPOINT ["/.entrypoint.sh"]
 CMD ["influxd"]
